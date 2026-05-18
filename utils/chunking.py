@@ -7,11 +7,22 @@ from langchain.docstore.document import (
 )
 
 
-def split_transcript(text):
+def split_transcript(
+    transcript_data,
+    video_title
+):
 
-    document = Document(
-        page_content=text
-    )
+    full_text = ""
+
+    timestamps = []
+
+    for item in transcript_data:
+
+        full_text += item["text"] + " "
+
+        timestamps.append(
+            item["start"]
+        )
 
     splitter = (
         RecursiveCharacterTextSplitter(
@@ -20,8 +31,30 @@ def split_transcript(text):
         )
     )
 
-    chunks = splitter.split_documents(
-        [document]
+    chunks = splitter.split_text(
+        full_text
     )
 
-    return chunks
+    documents = []
+
+    for i, chunk in enumerate(chunks):
+
+        documents.append(
+            Document(
+                page_content=chunk,
+                metadata={
+                    "video_title": video_title,
+                    "chunk_id": i + 1,
+                    "timestamp": (
+                        timestamps[
+                            min(
+                                i,
+                                len(timestamps)-1
+                            )
+                        ]
+                    )
+                }
+            )
+        )
+
+    return documents
