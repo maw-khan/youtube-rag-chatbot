@@ -53,28 +53,9 @@ The project demonstrates:
 
 ## System Architecture
 
-```mermaid
-flowchart TD
+![Architecture](images/Architecture.png) 
 
-    A[🎥 YouTube URL] --> B[📝 Transcript Extraction]
-    B --> C[✂️ Text Chunking]
-    C --> D[🔗 Embeddings Generation]
-    D --> E[🗂️ FAISS Vector Database]
-    E --> F[🔍 Retriever Pipeline]
-    F --> G[🧠 Semantic Reranking]
-    G --> H[✨ Gemini LLM]
-    H --> I[💬 Streaming AI Response]
 
-    style A fill:#FF4B4B,color:#fff,stroke:#222
-    style B fill:#4B8BFF,color:#fff,stroke:#222
-    style C fill:#9C6BFF,color:#fff,stroke:#222
-    style D fill:#00B894,color:#fff,stroke:#222
-    style E fill:#F39C12,color:#fff,stroke:#222
-    style F fill:#6C5CE7,color:#fff,stroke:#222
-    style G fill:#E84393,color:#fff,stroke:#222
-    style H fill:#00CEC9,color:#fff,stroke:#222
-    style I fill:#2D3436,color:#fff,stroke:#fff
-```
 ---
 
 # ⚙️ Tech Stack
