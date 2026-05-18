@@ -13,22 +13,6 @@ def create_vector_store(
     embedding_model
 ):
 
-    vector_store = FAISS.from_documents(
-        documents,
-        embedding_model
-    )
-
-    vector_store.save_local(
-        VECTOR_DB_PATH
-    )
-
-    return vector_store
-
-
-def load_vector_store(
-    embedding_model
-):
-
     if os.path.exists(
         VECTOR_DB_PATH
     ):
@@ -39,6 +23,19 @@ def load_vector_store(
             allow_dangerous_deserialization=True
         )
 
-        return vector_store
+        vector_store.add_documents(
+            documents
+        )
 
-    return None
+    else:
+
+        vector_store = FAISS.from_documents(
+            documents,
+            embedding_model
+        )
+
+    vector_store.save_local(
+        VECTOR_DB_PATH
+    )
+
+    return vector_store
