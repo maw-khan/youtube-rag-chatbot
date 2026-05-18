@@ -1,12 +1,14 @@
 import re
 
+from yt_dlp import YoutubeDL
+
 from youtube_transcript_api import (
     YouTubeTranscriptApi
 )
 
 
 # =========================
-# EXTRACT VIDEO ID
+# VIDEO ID
 # =========================
 
 def extract_video_id(url):
@@ -26,13 +28,27 @@ def extract_video_id(url):
 # VIDEO TITLE
 # =========================
 
-def extract_video_title(url):
+def extract_video_title(video_url):
 
     try:
 
-        video_id = extract_video_id(url)
+        ydl_opts = {
+            "quiet": True
+        }
 
-        return f"YouTube Video ({video_id})"
+        with YoutubeDL(
+            ydl_opts
+        ) as ydl:
+
+            info = ydl.extract_info(
+                video_url,
+                download=False
+            )
+
+            return info.get(
+                "title",
+                "Unknown Video"
+            )
 
     except:
 
@@ -40,21 +56,38 @@ def extract_video_title(url):
 
 
 # =========================
-# THUMBNAIL URL
+# THUMBNAIL
 # =========================
 
 def get_thumbnail_url(video_url):
 
-    video_id = extract_video_id(video_url)
+    try:
 
-    return (
-        f"https://img.youtube.com/vi/"
-        f"{video_id}/0.jpg"
-    )
+        ydl_opts = {
+            "quiet": True
+        }
+
+        with YoutubeDL(
+            ydl_opts
+        ) as ydl:
+
+            info = ydl.extract_info(
+                video_url,
+                download=False
+            )
+
+            return info.get(
+                "thumbnail",
+                ""
+            )
+
+    except:
+
+        return ""
 
 
 # =========================
-# FETCH TRANSCRIPT
+# TRANSCRIPT
 # =========================
 
 def get_video_transcript(video_url):
