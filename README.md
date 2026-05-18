@@ -1,6 +1,36 @@
 # 🎥 Advanced YouTube RAG Chatbot
 
-An advanced AI-powered YouTube chatbot that enables conversational interaction with YouTube videos using Retrieval-Augmented Generation (RAG), semantic reranking, transcript processing, and Gemini AI.
+![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red.svg)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-green.svg)
+![Google Gemini](https://img.shields.io/badge/LLM-Gemini%202.5-blueviolet.svg)
+![FAISS](https://img.shields.io/badge/VectorDB-FAISS-orange.svg)
+![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)
+
+---
+
+Deployed App Link:
+https://chatwithvideos.streamlit.app/
+
+---
+
+# 📌 Project Overview
+
+This application allows users to interact conversationally with YouTube videos.
+
+The system extracts video transcripts, converts them into semantic embeddings, stores them in a FAISS vector database, retrieves relevant transcript chunks, reranks results semantically, and generates contextual answers using Gemini AI.
+
+The project demonstrates:
+- RAG pipeline engineering
+- NLP workflows
+- conversational memory
+- semantic retrieval
+- vector databases
+- production AI application architecture
+
+---
+
+![Homepage](images/homepage.png)
 
 ---
 
@@ -21,42 +51,30 @@ An advanced AI-powered YouTube chatbot that enables conversational interaction w
 
 ---
 
-# 🧠 Project Overview
+## System Architecture
 
-This application allows users to interact conversationally with YouTube videos.
+```mermaid
+flowchart TD
 
-The system extracts video transcripts, converts them into semantic embeddings, stores them in a FAISS vector database, retrieves relevant transcript chunks, reranks results semantically, and generates contextual answers using Gemini AI.
+    A[🎥 YouTube URL] --> B[📝 Transcript Extraction]
+    B --> C[✂️ Text Chunking]
+    C --> D[🔗 Embeddings Generation]
+    D --> E[🗂️ FAISS Vector Database]
+    E --> F[🔍 Retriever Pipeline]
+    F --> G[🧠 Semantic Reranking]
+    G --> H[✨ Gemini LLM]
+    H --> I[💬 Streaming AI Response]
 
-The project demonstrates:
-- RAG pipeline engineering
-- NLP workflows
-- conversational memory
-- semantic retrieval
-- vector databases
-- production AI application architecture
-
----
-
-# 🏗️ Architecture
-
-```text
-YouTube URL
-      ↓
-Transcript Extraction
-      ↓
-Chunking
-      ↓
-Embeddings Generation
-      ↓
-FAISS Vector Database
-      ↓
-Retriever + Semantic Reranking
-      ↓
-Gemini LLM
-      ↓
-Streaming AI Response
+    style A fill:#FF4B4B,color:#fff,stroke:#222
+    style B fill:#4B8BFF,color:#fff,stroke:#222
+    style C fill:#9C6BFF,color:#fff,stroke:#222
+    style D fill:#00B894,color:#fff,stroke:#222
+    style E fill:#F39C12,color:#fff,stroke:#222
+    style F fill:#6C5CE7,color:#fff,stroke:#222
+    style G fill:#E84393,color:#fff,stroke:#222
+    style H fill:#00CEC9,color:#fff,stroke:#222
+    style I fill:#2D3436,color:#fff,stroke:#fff
 ```
-
 ---
 
 # ⚙️ Tech Stack
@@ -100,7 +118,7 @@ youtube-rag-chatbot/
 ├── data/
 │   └── faiss_index/
 │
-└── assets/
+└── images/
     └── screenshots/
 ```
 
@@ -111,8 +129,7 @@ youtube-rag-chatbot/
 ## Clone Repository
 
 ```bash
-git clone <your_repo_link>
-cd youtube-rag-chatbot
+git clone github.com/maw-khan/youtube-rag-chatbot.git
 ```
 
 ## Install Dependencies
@@ -129,19 +146,56 @@ streamlit run app.py
 
 ---
 
-# 📸 Screenshots
+🔑 API Key Setup
+You need a Google Gemini API Key.
+Get it from:
+👉 https://ai.google.dev/
+No need for .env file — the app accepts it directly via Streamlit sidebar.
 
-## Home Interface
-(Add screenshot here)
+![API Required](images/api_required.png)
 
-## Video Processing
-(Add screenshot here)
+---
 
-## Conversational Chat
-(Add screenshot here)
+▶️ Run the Deployed App (Link):
 
-## Timestamp Citations
-(Add screenshot here)
+---
+
+🔑 API Key Setup
+You need a Google Gemini API Key.
+Get it from:
+👉 https://ai.google.dev/
+No need for .env file — the app accepts it directly via Streamlit sidebar.
+
+![API Required](images/api_required.png)
+
+---
+
+▶️ Run the Deployed App (Link):
+
+https://chatwithvideos.streamlit.app/
+
+---
+
+## 💡 How to Use
+1. Enter your Gemini API Key in the sidebar
+2. Paste youtube videos links/URL
+3. Click “Process Video”
+4. Wait for processing to complete
+5. Start asking questions in the chat box
+6. View answers + expandable source references
+
+📚 Example Query
+“What is the main conclusion of the video?”
+The chatbot will:
+- Retrieve relevant chunks
+- Generate an answer using Gemini
+- Show source excerpts used for reasoning
+  
+![Chat Example](images/chat_example1.png)
+
+---
+
+![Chat Example](images/chat_example2.png)
 
 ---
 
@@ -194,6 +248,6 @@ This project helped strengthen understanding of:
 
 # 👨‍💻 Author
 
-Ali Khan
+Muhammad Ali Waris Khan
 
 AI Developer | RAG Systems | Streamlit AI Apps | Python
