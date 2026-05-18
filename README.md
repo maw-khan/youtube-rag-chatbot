@@ -158,20 +158,6 @@ No need for .env file — the app accepts it directly via Streamlit sidebar.
 
 ▶️ Run the Deployed App (Link):
 
----
-
-🔑 API Key Setup
-You need a Google Gemini API Key.
-Get it from:
-👉 https://ai.google.dev/
-No need for .env file — the app accepts it directly via Streamlit sidebar.
-
-![API Required](images/api_required.png)
-
----
-
-▶️ Run the Deployed App (Link):
-
 https://chatwithvideos.streamlit.app/
 
 ---
@@ -204,13 +190,13 @@ The chatbot will:
 ## 🎥 Transcript Extraction
 Automatically extracts transcripts from YouTube videos.
 
-## 🧠 Retrieval-Augmented Generation (RAG)
+## 📊 Retrieval-Augmented Generation (RAG)
 Relevant transcript chunks are retrieved before generating responses.
 
 ## 📚 Semantic Reranking
 Retrieved chunks are reranked using transformer-based semantic similarity models.
 
-## ⏱ Timestamp Citations
+## 📌 Timestamp Citations
 Responses include transcript timestamps for source verification.
 
 ## ⚡ Streaming Responses
