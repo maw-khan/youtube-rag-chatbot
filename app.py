@@ -4,7 +4,9 @@ import streamlit as st
 from dotenv import load_dotenv
 
 from utils.transcript import (
-    get_video_transcript
+    get_video_transcript,
+    get_thumbnail_url,
+    extract_video_title
 )
 
 from utils.chunking import (
@@ -23,6 +25,10 @@ from utils.rag_chain import (
     create_rag_chain
 )
 
+from utils.reranker import (
+    rerank_documents
+)
+
 
 # =========================
 # PAGE CONFIG
@@ -35,13 +41,13 @@ st.set_page_config(
 )
 
 st.title(
-    "🎥 YouTube Video RAG Chatbot"
+    "🎥 Advanced YouTube RAG Chatbot"
 )
 
 st.markdown(
     """
 Chat with YouTube videos using
-Gemini AI + RAG.
+Gemini AI + Advanced RAG.
 """
 )
 
@@ -83,6 +89,10 @@ if "chat_history" not in st.session_state:
 
     st.session_state.chat_history = []
 
+if "transcript_text" not in st.session_state:
+
+    st.session_state.transcript_text = ""
+
 
 # =========================
 # INPUT
@@ -119,17 +129,53 @@ if st.button("Process Video"):
                 "Processing video..."
             ):
 
-                # GET TRANSCRIPT
-                transcript = (
+                # TITLE
+                video_title = (
+                    extract_video_title(
+                        video_url
+                    )
+                )
+
+                # THUMBNAIL
+                thumbnail = (
+                    get_thumbnail_url(
+                        video_url
+                    )
+                )
+
+                st.image(
+                    thumbnail,
+                    width=500
+                )
+
+                st.subheader(
+                    video_title
+                )
+
+                # TRANSCRIPT
+                transcript_data = (
                     get_video_transcript(
                         video_url
                     )
                 )
 
-                # SPLIT
+                transcript_text = " ".join(
+                    [
+                        item["text"]
+                        for item
+                        in transcript_data
+                    ]
+                )
+
+                st.session_state.transcript_text = (
+                    transcript_text
+                )
+
+                # CHUNKING
                 documents = (
                     split_transcript(
-                        transcript
+                        transcript_data,
+                        video_title
                     )
                 )
 
@@ -151,7 +197,7 @@ if st.button("Process Video"):
                     vector_store.as_retriever(
                         search_type="mmr",
                         search_kwargs={
-                            "k": 4
+                            "k": 8
                         }
                     )
                 )
@@ -177,7 +223,21 @@ if st.button("Process Video"):
 
 
 # =========================
-# DISPLAY CHAT HISTORY
+# DOWNLOAD TRANSCRIPT
+# =========================
+
+if st.session_state.transcript_text:
+
+    st.download_button(
+        label="📥 Download Transcript",
+        data=st.session_state.transcript_text,
+        file_name="transcript.txt",
+        mime="text/plain"
+    )
+
+
+# =========================
+# CHAT HISTORY
 # =========================
 
 for role, message in (
@@ -194,7 +254,7 @@ for role, message in (
 # =========================
 
 query = st.chat_input(
-    "Ask questions about the video..."
+    "Ask questions about videos..."
 )
 
 
@@ -226,22 +286,54 @@ if query and st.session_state.qa_chain:
                 "source_documents"
             ]
 
+            # RERANK
+            reranked_docs = (
+                rerank_documents(
+                    query,
+                    source_docs
+                )
+            )
+
         with st.chat_message(
             "assistant"
         ):
 
-            st.markdown(answer)
+            st.write_stream(
+                iter([answer])
+            )
 
             with st.expander(
-                "📚 Source Chunks"
+                "📚 Source Citations"
             ):
 
                 for i, doc in enumerate(
-                    source_docs
+                    reranked_docs[:4]
                 ):
 
+                    timestamp = int(
+                        doc.metadata[
+                            "timestamp"
+                        ]
+                    )
+
+                    minutes = (
+                        timestamp // 60
+                    )
+
+                    seconds = (
+                        timestamp % 60
+                    )
+
                     st.markdown(
-                        f"### Chunk {i+1}"
+                        f"""
+### Citation {i+1}
+
+🎥 Video:
+{doc.metadata['video_title']}
+
+⏱ Timestamp:
+{minutes}:{seconds:02d}
+"""
                     )
 
                     st.write(
