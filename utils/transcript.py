@@ -6,7 +6,7 @@ from youtube_transcript_api import (
 
 
 # =========================
-# VIDEO ID
+# EXTRACT VIDEO ID
 # =========================
 
 def extract_video_id(url):
@@ -40,7 +40,7 @@ def extract_video_title(url):
 
 
 # =========================
-# THUMBNAIL
+# THUMBNAIL URL
 # =========================
 
 def get_thumbnail_url(video_url):
@@ -54,7 +54,7 @@ def get_thumbnail_url(video_url):
 
 
 # =========================
-# GET TRANSCRIPT
+# FETCH TRANSCRIPT
 # =========================
 
 def get_video_transcript(video_url):
@@ -65,19 +65,26 @@ def get_video_transcript(video_url):
             video_url
         )
 
-        transcript = (
-            YouTubeTranscriptApi
-            .get_transcript(video_id)
+        if not video_id:
+
+            raise Exception(
+                "Invalid YouTube URL"
+            )
+
+        api = YouTubeTranscriptApi()
+
+        fetched_transcript = api.fetch(
+            video_id
         )
 
         transcript_data = []
 
-        for item in transcript:
+        for item in fetched_transcript:
 
             transcript_data.append(
                 {
-                    "text": item["text"],
-                    "start": item["start"]
+                    "text": item.text,
+                    "start": item.start
                 }
             )
 
