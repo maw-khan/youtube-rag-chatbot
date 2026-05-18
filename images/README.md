@@ -1,5 +1,6 @@
 ## 📊 Visualizations 
 
+![Architecture](Architecture.png) 
 ![Homepage](homepage.png)
 ![API Required](api_required.png) 
 ![Chat Example 1](chat_example1.png)
