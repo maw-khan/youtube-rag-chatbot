@@ -7,3 +7,5 @@ langchain-text-splitters
 faiss-cpu
 python-dotenv
 tiktoken
+sentence-transformers
+rank-bm25
