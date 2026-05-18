@@ -351,4 +351,14 @@ if query and st.session_state.qa_chain:
 
     except Exception as e:
 
-        st.error(str(e))
+        st.error(
+                    """
+                Could not fetch transcript.
+                
+                Possible reasons:
+                - Transcript disabled
+                - No captions available
+                - Private/restricted video
+                - Invalid URL
+                """
+                )
