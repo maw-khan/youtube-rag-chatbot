@@ -6,7 +6,7 @@ from youtube_transcript_api import (
 
 
 # =========================
-# EXTRACT VIDEO ID
+# VIDEO ID
 # =========================
 
 def extract_video_id(url):
@@ -23,6 +23,37 @@ def extract_video_id(url):
 
 
 # =========================
+# VIDEO TITLE
+# =========================
+
+def extract_video_title(url):
+
+    try:
+
+        video_id = extract_video_id(url)
+
+        return f"YouTube Video ({video_id})"
+
+    except:
+
+        return "Unknown Video"
+
+
+# =========================
+# THUMBNAIL
+# =========================
+
+def get_thumbnail_url(video_url):
+
+    video_id = extract_video_id(video_url)
+
+    return (
+        f"https://img.youtube.com/vi/"
+        f"{video_id}/0.jpg"
+    )
+
+
+# =========================
 # GET TRANSCRIPT
 # =========================
 
@@ -34,29 +65,26 @@ def get_video_transcript(video_url):
             video_url
         )
 
-        if not video_id:
-
-            raise Exception(
-                "Invalid YouTube URL"
-            )
-
         transcript = (
             YouTubeTranscriptApi
             .get_transcript(video_id)
         )
 
-        full_text = ""
+        transcript_data = []
 
         for item in transcript:
 
-            full_text += (
-                item["text"] + " "
+            transcript_data.append(
+                {
+                    "text": item["text"],
+                    "start": item["start"]
+                }
             )
 
-        return full_text
+        return transcript_data
 
     except Exception as e:
 
         raise Exception(
-            f"Transcript error: {str(e)}"
+            f"Transcript Error: {str(e)}"
         )
