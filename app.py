@@ -143,15 +143,27 @@ if st.button("Process Video"):
                     )
                 )
 
-                st.image(
-                    thumbnail,
-                    width=500
+                col1, col2 = st.columns(
+                    [1, 2]
                 )
-
-                st.subheader(
-                    video_title
-                )
-
+                
+                with col1:
+                
+                    st.image(
+                        thumbnail,
+                        use_container_width=True
+                    )
+                
+                with col2:
+                
+                    st.subheader(
+                        video_title
+                    )
+                
+                    st.success(
+                        "Video metadata extracted successfully."
+                    )
+                
                 # TRANSCRIPT
                 transcript_data = (
                     get_video_transcript(
@@ -219,7 +231,18 @@ if st.button("Process Video"):
 
         except Exception as e:
 
-            st.error(str(e))
+            st.error(
+                    """
+                Could not fetch transcript.
+                
+                Possible reasons:
+                - Transcript disabled
+                - No captions available
+                - Private/restricted video
+                - Invalid URL
+                """
+                )
+
 
 
 # =========================
@@ -350,15 +373,6 @@ if query and st.session_state.qa_chain:
         )
 
     except Exception as e:
+        st.error(str(e))
 
-        st.error(
-                    """
-                Could not fetch transcript.
-                
-                Possible reasons:
-                - Transcript disabled
-                - No captions available
-                - Private/restricted video
-                - Invalid URL
-                """
-                )
+        
