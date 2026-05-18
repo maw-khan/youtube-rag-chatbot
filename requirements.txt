@@ -9,3 +9,4 @@ python-dotenv
 tiktoken
 sentence-transformers
 rank-bm25
+yt-dlp
