@@ -25,7 +25,8 @@ def create_rag_chain(
 
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.5-flash",
-        temperature=0.3
+        temperature=0.3,
+        streaming=True
     )
 
     qa_chain = (
